@@ -1,0 +1,5 @@
+import http.client
+def mainpayload(pathsArquivos):
+	payload = open(pathsArquivos[1], "r", encoding='UTF8')
+	payload = ''.join([i for i in payload])
+	return payload
