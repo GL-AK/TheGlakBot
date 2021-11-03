@@ -1,0 +1,34 @@
+import requests
+import csv
+import re
+def main(pathsArquivos):
+    f0 = open(pathsArquivos[0], 'w', encoding='UTF8')
+    f2 = open(pathsArquivos[1], 'w', encoding='UTF8')
+    f3 = open(pathsArquivos[2], 'w', encoding='UTF8')
+    f0.truncate()
+    f2.truncate()
+    f3.truncate()
+    f0.close()
+    f2.close()
+    f3.close()
+    f = open(pathsArquivos[3], 'w', encoding='UTF8')
+    writer = csv.writer(f)
+    header = ['Número do Pedido', 'Nome do Cliente', 'CPF', 'Rastreamento','Situação']
+    writer.writerow(header)
+    url = 'https://marcelstein.com/elochallenge/getData.php?token=48696189ec37878461549cceedc3afd8'
+    headers = {'user-agent': 'my-app/0.0.1'}
+    response = requests.options(url, headers=headers, )
+    data = (response.text)
+    data_client = (response.text)
+    lote_pattern = '^{\"batch\"\:\s\"([0-9]{6})'
+    result_lote = re.match(lote_pattern, data)
+    lote_number = (result_lote.group(1))
+    client_pattern = '\{\"np\"\:\s\"([0-9]{9})\"\,\s\"nc\"\:\s\"([A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ\-\'\s]+)\"\,\s\"cp\"\:\s\"([0-9\.\-]{0,15})\"\,\s\"cr\"\:\s\"([0-9\.\-]{0,11})\"'
+    client_pattern_parsed_pattern ='\(\'([0-9]{9})\'\,\s\'([A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ\-\'\s]+)\'\,\s\'([0-9\.\-]{0,15})\'\,\s\'([0-9\.\-]{0,11})\'\)'
+    result_client = re.findall(client_pattern, data_client)
+    count=1
+    for item in result_client:
+
+        writer.writerow(item)
+        count+=1
+    return lote_number
