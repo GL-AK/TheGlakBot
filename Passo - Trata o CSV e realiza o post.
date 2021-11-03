@@ -1,0 +1,14 @@
+def maincsv(pathsArquivos):
+  text = open(pathsArquivos[0], "r", encoding='UTF8')
+  text = ''.join([i for i in text]) \
+      .replace("transferencia", "transferência")
+  x = open(pathsArquivos[2],"w", encoding='UTF8')
+  x.writelines(text)
+  x.close()
+  with open(pathsArquivos[2], 'r') as r, open(pathsArquivos[1], 'w') as w:    
+      for num, line in enumerate(r):
+          if num == 100:            
+              newline = line[:-2] + "\n" if "\n" in line else line[:-1]
+          else:
+              newline = line               
+          w.write(newline)
